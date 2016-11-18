@@ -68,6 +68,10 @@ public class MultiThreadServer0 extends Thread {
 				// if client wants to initiate chat session, server'd ask for a
 				// unique username
 				String line = in.readLine();
+				if(line == null) {
+					System.out.println("line enetered in null");
+					continue; 
+				}
 				if (line.startsWith("SERVER")) {
 					(serverAccept = new ServerThread(client)).start();
 				} else if (line.startsWith("JOIN")) {

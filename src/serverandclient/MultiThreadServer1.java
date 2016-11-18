@@ -57,7 +57,11 @@ public class MultiThreadServer1 extends Thread {
 				// unique username
 
 				String line = in.readLine();
-				if (line.startsWith("SERVER")) {
+				if(line == null) {
+					System.out.println("line enetered in null");
+					continue; 
+				}
+				if ( line.startsWith("SERVER")) {
 					(serverAccept = new ServerThread(client)).start();
 
 					boolean connectedServer = false;

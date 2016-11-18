@@ -50,10 +50,14 @@ public class MultiThreadServer3 extends Thread {
 
 				PrintStream p = new PrintStream(client.getOutputStream());
 				String username = "";
-				// if client wants to initiate chat session, server'd ask for a
+				// if client wants to initiate chat session, server'd ask for a×
 				// unique username
 				String line = in.readLine();
-				if (line.startsWith("SERVER")) {
+				if(line == null) {
+					System.out.println("line enetered in null");
+					continue; 
+				}
+				if (line != null && line.startsWith("SERVER")) {
 					(serverAccept = new ServerThread(client)).start();
 					boolean connectedServer = false;
 					while (!connectedServer) {
