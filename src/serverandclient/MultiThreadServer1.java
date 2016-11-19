@@ -47,7 +47,7 @@ public class MultiThreadServer1 extends Thread {
 
 		while (true) {
 			try {
-				while (client == null)
+				
 					client = s.accept();
 
 				DataInputStream in = new DataInputStream(client.getInputStream());

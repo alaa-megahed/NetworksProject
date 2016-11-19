@@ -43,7 +43,6 @@ public class MultiThreadServer3 extends Thread {
 		String host0 = "localhost";
 		while (true) {
 			try {
-				while (client == null)
 					client = s.accept();
 
 				DataInputStream in = new DataInputStream(client.getInputStream());

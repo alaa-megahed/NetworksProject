@@ -138,10 +138,12 @@ public class Client implements Runnable {
 															
 			output = new PrintStream(s.getOutputStream()); // to send msg to the server
 			
-			String s1 = input.readLine();
-			String s2 = input.readLine();
-			String[] arr = {s1, s2};
+			String port = input.readLine();
+			String IP = input.readLine();
+			String[] arr = {port, IP};
 			s.close();
+			input.close();
+			output.close();
 			return arr;
 		
 	}

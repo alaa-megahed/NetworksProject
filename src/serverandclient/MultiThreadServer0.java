@@ -58,9 +58,8 @@ public class MultiThreadServer0 extends Thread {
 
 		while (true) {
 			try {
-				while(client == null)
-				client = s.accept();
-
+					client = s.accept();
+				
 				DataInputStream in = new DataInputStream(client.getInputStream());
 				PrintStream p = new PrintStream(client.getOutputStream());
 
@@ -75,6 +74,7 @@ public class MultiThreadServer0 extends Thread {
 				if (line.startsWith("SERVER")) {
 					(serverAccept = new ServerThread(client)).start();
 				} else if (line.startsWith("JOIN")) {
+					System.out.println("YOOOOO");
 					p.println("Enter your username: ");
 					while (true) {
 						boolean sameName = false;

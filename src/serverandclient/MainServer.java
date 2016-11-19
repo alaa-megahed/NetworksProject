@@ -9,24 +9,12 @@ import java.net.Socket;
 
 public class MainServer
 {
-	static MultiThreadServer0 server0;
-	static MultiThreadServer1 server1;
-	static MultiThreadServer2 server2;
-	static MultiThreadServer3 server3;
-	
+	static int nextServer; 
+	static String [] IP = {"localhost", "localhost", "localhost", "localhost"};
+	static String [] port = {"6000", "6500", "7000", "7500"}; 
 	public static void main(String[] args) throws IOException
 	{
 		ServerSocket s = new ServerSocket(8000);
-		
-		server0 = new MultiThreadServer0();
-		server1 = new MultiThreadServer1();
-		server2 = new MultiThreadServer2();
-		server3 = new MultiThreadServer3();
-		
-		server0.start();
-		server1.start();
-		server2.start();
-		server3.start();
 		
 		while(true)
 		{ 
@@ -36,45 +24,31 @@ public class MainServer
 			PrintStream p = new PrintStream(client.getOutputStream());
 			
 			
-			String[] arr = min();
+			String[] arr = nextServer();
 			int portNumber = Integer.parseInt(arr[0]);
 			String ip = arr[1];
 			
 			p.println(portNumber);
 			p.println(ip);
+			System.out.println("IP and port sent");
+			client.close();
+			nextServer = (nextServer + 1)%4; 
 			
 		}
 		
 		
 	}
 	
-	public static String[] min()
+	public static String[] nextServer()
 	{
-		int minimum = Math.min((Math.min(server0.clientNo, server1.clientNo)), (Math.min(server2.clientNo, server3.clientNo)));
-		String[] res = new String[2];
-		
-		if(minimum == server0.clientNo)
-		{
-			res[0] = "" + server0.port;
-			res[1] = server0.ip;
+		String res [] = new String[2]; 
+		for (int i = 0; i < 3; i++) {
+			if(nextServer == i) {
+				res[0] = port[i]; 
+				res[1] = IP[i]; 
+				return res; 
+			}
 		}
-		
-		if(minimum == server1.clientNo)
-		{
-			res[0] = "" + server1.port;
-			res[1] = server1.ip;
-		}
-		
-		if(minimum == server2.clientNo)
-		{
-			res[0] = "" + server2.port;
-			res[1] = server2.ip;
-		}
-		if(minimum == server3.clientNo)
-		{
-			res[0] = "" + server3.port;
-			res[1] = server3.ip;
-		}
-			return res;
+		return null; 
 	}
 }
