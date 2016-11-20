@@ -15,14 +15,19 @@ public class clientThread extends Thread
 	int maxclient;
 	String name;
 	int clientNo;
-
-	public clientThread(Socket client, ArrayList<clientThread> threads, String name, int clientNo)
+	PrintStream outNextServer;
+	DataInputStream inputFromNextServer;
+	int TTL = 4;
+	
+	public clientThread(Socket client, ArrayList<clientThread> threads, String name, int clientNo, DataInputStream inputFromNextServer, PrintStream outNextServer)
 	{
 		this.client = client;
 		this.threads = threads;
 		maxclient = threads.size();
 		this.name = name;
 		this.clientNo = clientNo;
+		this.outNextServer = outNextServer;
+		this.inputFromNextServer = inputFromNextServer;
 	}
 
 	public void run()
@@ -61,19 +66,44 @@ public class clientThread extends Thread
 					input.close();
 				}
 				//loop over all online clients when client requests list of them
-				else if (line.startsWith("I want list"))
+				else if (line.startsWith("I want my list"))
 				{
 					boolean noone = true;
 					for (clientThread i : threads)
 					{
 						if (i != this)
 						{
-							output.println(i.name);
+							output.print(i.name+",");
 							noone = false;
 						}
 					}
 					if(noone)
 						output.println("Nobody is online now :(");
+					else
+						output.println();
+				}
+				
+				else if(line.startsWith("I want all lists"))
+				{
+					int count = 1;
+					int statusSoFar = 0;
+
+					for (clientThread i : threads)
+					{
+						if (i != this)
+						{
+							output.print(i.name+",");
+							statusSoFar = 1;
+						}
+					}
+
+					if(outNextServer != null)
+					{
+						System.out.println("outNextServer not null");
+						outNextServer.println("I want all lists:"+(count)+":"+statusSoFar);
+						output.println(inputFromNextServer.readLine());
+					}
+						
 				}
 				
 				//starting group chat
@@ -104,21 +134,17 @@ public class clientThread extends Thread
 					//sending the message to all group members
 					for (int i = 0; i < namesList.length; i++)
 					{
-						for (clientThread j: threads)
+						String creationGrpoupHeader = name+" has created group chat("+gpchatname+") with You";
+						for (int j = 0; j < namesList.length; j++)
 						{
-							if(j.name.equals(namesList[i]))
-							{
-								String groupNames = "You";
-								for (int k = 0; k < namesList.length; k++)
-								{
-									if(!namesList[k].equals(j.name))
-										groupNames += ", "+namesList[k];
-								}
-								j.output.println(name + " has created group chat(" + gpchatname+") with "+ groupNames);
-								j.output.println(name + ": " + message);
-								break;
-							}
+							if(j != i)
+								creationGrpoupHeader += ", "+namesList[j];
 						}
+						String headerMessage = "["+creationGrpoupHeader + "]";
+						String newMessage = name+":"+message;
+						sendMessage(namesList[i], headerMessage);
+						sendMessage(namesList[i], newMessage);
+
 					}
 				}
 				//ordinary individual message
@@ -132,23 +158,38 @@ public class clientThread extends Thread
 					{
 						message +=":" +b[i];
 					}
-					//sending the msg to the chosen receiver
-					for (clientThread i: threads)
-					{
-						if (i.name.equals(username))
-						{
-							i.output.println(name + ":" + message);
-							break;
-						}
-					}
+					message = name+":"+message;
+					sendMessage(username, message);
 				}
 			}
 		}
-
+	
 		catch (IOException e)
 		{
 			System.out.println("exception");
 			e.printStackTrace();
+		}
+	}
+	
+	public void sendMessage(String receiver, String message) throws IOException
+	{
+		boolean found = false;
+		//sending the msg to the chosen receiver
+		for (clientThread i: threads)
+		{
+			if (i.name.equals(receiver))
+			{
+				i.output.println(message);
+				found = true;
+				break;
+			}
+		}
+		if(!found && outNextServer != null)
+		{
+			outNextServer.println((TTL-1)+":"+receiver+":"+message);
+			String responce = inputFromNextServer.readLine();
+			if(responce.startsWith("ERROR: MESSAGE CAN NOT BE SENT"))
+				output.println(responce);
 		}
 	}
 }

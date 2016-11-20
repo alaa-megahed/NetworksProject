@@ -57,7 +57,7 @@ public class MultiThreadServer3 extends Thread {
 					continue; 
 				}
 				if (line != null && line.startsWith("SERVER")) {
-					(serverAccept = new ServerThread(client)).start();
+					(serverAccept = new ServerThread(client, threads)).start();
 					boolean connectedServer = false;
 					while (!connectedServer) {
 						try {
@@ -66,10 +66,11 @@ public class MultiThreadServer3 extends Thread {
 							out0 = new PrintStream(server0.getOutputStream());
 							out0.println("SERVER");
 							connectedServer = true;
+							serverAccept.nextServer = server0;
 							System.out.println("CONNECTED SERVER 3 TO 0");
 						} catch (IOException e) {
 
-							System.out.println("Cannot connect to server");
+					//		System.out.println("Cannot connect to server");
 
 						}
 					}
@@ -91,10 +92,21 @@ public class MultiThreadServer3 extends Thread {
 
 							}
 						}
-
+						if(sameName) continue;
+						
+						if(server0 != null)
+						{
+							out0.println("CHECK THIS NAME:1:"+username);
+							String responce = inp0.readLine();
+							if(responce.equals("FOUND"))
+							{
+								p.println("Sorry. Enter another username");
+								sameName = true;
+							}
+						}
 						if (!sameName) {
 
-							clientThread thread = new clientThread(client, threads, username, clientNo);
+							clientThread thread = new clientThread(client, threads, username, clientNo, inp0, out0);
 
 							threads.add(thread);
 							thread.start();

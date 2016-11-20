@@ -33,20 +33,7 @@ public class Client implements Runnable {
 															
 			output = new PrintStream(myClient.getOutputStream()); // to send msg to the server
 			
-//			String fromServer0 = input.readLine();
-//			System.out.println(fromServer0);
-//			if(!fromServer0.equals("Connected"))
-//			{
-//				StringTokenizer st = new StringTokenizer(fromServer0);
-//				int newPort = Integer.parseInt(st.nextToken());
-//				String newHost = st.nextToken();
-//				myClient.close();
-//				input.close();
-//				output.close();
-//				myClient = new Socket(newHost, newPort);
-//				input = new DataInputStream(myClient.getInputStream());
-//				output = new PrintStream(myClient.getOutputStream());
-//			}
+
 															
 		} catch (UnknownHostException e) {
 
@@ -91,43 +78,7 @@ public class Client implements Runnable {
 			e.printStackTrace();
 		}
 
-		/*
-		 * String hostname = "localhost"; int portnumber = 6000;
-		 * 
-		 * DataInputStream input = null; DataOutputStream output = null;
-		 * 
-		 * BufferedReader br = new BufferedReader(new
-		 * InputStreamReader(System.in)); // take // input // from // the //
-		 * user
-		 * 
-		 * try { String response; while (true) { try { myClient = new
-		 * Socket(hostname, portnumber); } catch (UnknownHostException e) {
-		 * 
-		 * e.printStackTrace(); } catch (IOException e) {
-		 * 
-		 * e.printStackTrace(); }
-		 * 
-		 * try { input = new DataInputStream(myClient.getInputStream()); // to
-		 * // get // the // response // from // the // server } catch
-		 * (IOException e) {
-		 * 
-		 * e.printStackTrace(); }
-		 * 
-		 * try { output = new DataOutputStream(myClient.getOutputStream()); //
-		 * to // send // messages // to // the // server } catch (IOException e)
-		 * {
-		 * 
-		 * e.printStackTrace(); }
-		 * 
-		 * String req = br.readLine(); output.writeBytes(req + "\n"); response =
-		 * input.readLine(); System.out.println("Server: " + response); if
-		 * (response.equals("Bye, The connection will end!")) { // to // handle
-		 * // the // case // when // the // client // sends // bye // or // quit
-		 * break; } } } catch (Exception e) { }
-		 * 
-		 * try { output.close(); input.close(); myClient.close(); // to close
-		 * the socket } catch (IOException e) { }
-		 */}
+		}
 	
 	public static String[] getCorrectServer() throws UnknownHostException, IOException
 	{
@@ -141,9 +92,9 @@ public class Client implements Runnable {
 			String port = input.readLine();
 			String IP = input.readLine();
 			String[] arr = {port, IP};
-			s.close();
 			input.close();
 			output.close();
+			s.close();
 			return arr;
 		
 	}

@@ -42,7 +42,7 @@ public class MainServer
 	public static String[] nextServer()
 	{
 		String res [] = new String[2]; 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 4 ; i++) {
 			if(nextServer == i) {
 				res[0] = port[i]; 
 				res[1] = IP[i]; 
