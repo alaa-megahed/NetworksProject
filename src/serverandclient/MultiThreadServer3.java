@@ -40,7 +40,7 @@ public class MultiThreadServer3 extends Thread {
 		DataInputStream inp0 = null;
 		// BufferedReader br = null;
 		int port0 = 6000;
-		String host0 = "localhost";
+		String host0 = Constants.IP_SERVER_0;
 		while (true) {
 			try {
 					client = s.accept();
@@ -58,10 +58,12 @@ public class MultiThreadServer3 extends Thread {
 				}
 				if (line != null && line.startsWith("SERVER")) {
 					(serverAccept = new ServerThread(client, threads)).start();
+					
 					boolean connectedServer = false;
 					while (!connectedServer) {
 						try {
 							server0 = new Socket(host0, port0);
+							
 							inp0 = new DataInputStream(server0.getInputStream());
 							out0 = new PrintStream(server0.getOutputStream());
 							out0.println("SERVER");
@@ -69,8 +71,8 @@ public class MultiThreadServer3 extends Thread {
 							serverAccept.nextServer = server0;
 							System.out.println("CONNECTED SERVER 3 TO 0");
 						} catch (IOException e) {
-
-					//		System.out.println("Cannot connect to server");
+							e.printStackTrace();
+							System.out.println("Cannot connect to server");
 
 						}
 					}

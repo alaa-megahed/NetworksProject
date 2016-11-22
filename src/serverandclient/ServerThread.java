@@ -47,106 +47,110 @@ public class ServerThread extends Thread
 		}
 		while (true)
 		{
-			try
-			{
-				String line = input.readLine();
-				System.out.println("read " + line + "in serverThread");
-				if (line.startsWith("I want all lists"))
-				{
-					StringTokenizer st = new StringTokenizer(line, ":");
-					st.nextToken();
-					int count = Integer.parseInt(st.nextToken()) + 1;
-					int statusSoFar = Integer.parseInt(st.nextToken());
+//			synchronized (this)
+//			{
 
-					String myList = "";
-					for (clientThread i : threads)
+				try
+				{
+					String line = input.readLine();
+					System.out.println("read " + line + "in serverThread");
+					if (line.startsWith("I want all lists"))
 					{
-						myList += i.name + ",";
-						statusSoFar = 1;
-					}
-					if (count == 4)
-					{
-						if (statusSoFar == 0)
-							output.println("Nobody is online now :(");
-						else
-							output.println(myList);
+						StringTokenizer st = new StringTokenizer(line, ":");
+						st.nextToken();
+						int count = Integer.parseInt(st.nextToken()) + 1;
+						int statusSoFar = Integer.parseInt(st.nextToken());
 
-					} else if (nextServer != null)
-					{
-						nxtOutput.println("I want all lists:" + (count) + ":"
-								+ statusSoFar);
-						output.println(myList + nxtInput.readLine());
-					}
-				}
-				else if(line.startsWith("CHECK THIS NAME"))
-				{
-					StringTokenizer st = new StringTokenizer(line, ":"); st.nextToken();
-					int count = Integer.parseInt(st.nextToken());
-					String username = st.nextToken();
-					if(count == 4)
-						output.println("NOT FOUND");
-					else
-					{
-						boolean found = false;
-						for(clientThread i : threads)
-							if(i.name.equalsIgnoreCase(username))
-							{
-								output.println("FOUND");
-								found = true;
-								break;
-							}
-						if(!found)
-						{
-							nxtOutput.println("CHECK THIS NAME:"+(count + 1)+":"+username);
-							output.println(nxtInput.readLine());
-						}
-					}
-				}
-				else
-				{
-					String[] b = line.split(":");
-					int ttl = Integer.parseInt(b[0]);
-					String reciever = b[1];
-					String message = b[2];
-					// in case original msg contains ":"
-					for (int i = 3; i < b.length; i++)
-					{
-						message += ":" + b[i];
-					}
-					if (ttl == 0)
-					{
-						output.println("ERROR: MESSAGE CAN NOT BE SENT TO "+ reciever);
-					} 
-					else
-					{		
-						boolean found = false;
-						// sending the msg to the chosen receiver
+						String myList = "";
 						for (clientThread i : threads)
 						{
-							if (i.name.equals(reciever))
-							{
-								i.output.println(message);
-								found = true;
-								break;
-							}
+							myList += i.name + ",";
+							statusSoFar = 1;
 						}
-						if (!found)
+						if (count == 4)
 						{
-							nxtOutput.println((ttl - 1) + ":" + reciever + ":" + message);
-							output.println(nxtInput.readLine());
+							if (statusSoFar == 0)
+								output.println("Nobody is online now :(");
+							else
+								output.println(myList);
+
+						} else if (nextServer != null)
+						{
+							nxtOutput.println("I want all lists:" + (count)
+									+ ":" + statusSoFar);
+							output.println(myList + nxtInput.readLine());
 						}
+					} else if (line.startsWith("CHECK THIS NAME"))
+					{
+						StringTokenizer st = new StringTokenizer(line, ":");
+						st.nextToken();
+						int count = Integer.parseInt(st.nextToken());
+						String username = st.nextToken();
+						if (count == 4)
+							output.println("NOT FOUND");
 						else
 						{
-							output.println("OK MESSAGE SENT");
+							boolean found = false;
+							for (clientThread i : threads)
+								if (i.name.equalsIgnoreCase(username))
+								{
+									output.println("FOUND");
+									found = true;
+									break;
+								}
+							if (!found)
+							{
+								nxtOutput.println("CHECK THIS NAME:"
+										+ (count + 1) + ":" + username);
+								output.println(nxtInput.readLine());
+							}
+						}
+					} else
+					{
+						String[] b = line.split(":");
+						int ttl = Integer.parseInt(b[0]);
+						String reciever = b[1];
+						String message = b[2];
+						// in case original msg contains ":"
+						for (int i = 3; i < b.length; i++)
+						{
+							message += ":" + b[i];
+						}
+						if (ttl == 0)
+						{
+							output.println("ERROR: MESSAGE CAN NOT BE SENT TO "
+									+ reciever);
+						} else
+						{
+							boolean found = false;
+							// sending the msg to the chosen receiver
+							for (clientThread i : threads)
+							{
+								if (i.name.equals(reciever))
+								{
+									i.output.println(message);
+									found = true;
+									break;
+								}
+							}
+							if (!found)
+							{
+								nxtOutput.println((ttl - 1) + ":" + reciever
+										+ ":" + message);
+								output.println(nxtInput.readLine());
+							} else
+							{
+								output.println("OK MESSAGE SENT");
+							}
 						}
 					}
+				} catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			} catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
-		}
+			}
+	//	}
 	}
 }

@@ -10,7 +10,7 @@ import java.net.Socket;
 public class MainServer
 {
 	static int nextServer; 
-	static String [] IP = {"localhost", "localhost", "localhost", "localhost"};
+	static String [] IP = {Constants.IP_SERVER_0, Constants.IP_SERVER_1, Constants.IP_SERVER_2, Constants.IP_SERVER_3};
 	static String [] port = {"6000", "6500", "7000", "7500"}; 
 	public static void main(String[] args) throws IOException
 	{

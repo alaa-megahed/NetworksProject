@@ -41,7 +41,7 @@ public class MultiThreadServer1 extends Thread {
 		DataInputStream inp2 = null;
 		// BufferedReader br = null;
 		int port2 = 7000;
-		String host2 = "localhost";
+		String host2 = Constants.IP_SERVER_2;
 		// create a client socket for each connection and pass it to a new
 		// thread.
 

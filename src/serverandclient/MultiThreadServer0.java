@@ -40,7 +40,7 @@ public class MultiThreadServer0 extends Thread
 		DataInputStream inp1 = null;
 		// BufferedReader br = null;
 		int port1 = 6500;
-		String host1 = "localhost";
+		String host1 = Constants.IP_SERVER_1;
 		boolean connectedServer = false;
 		while (!connectedServer)
 		{
@@ -107,6 +107,7 @@ public class MultiThreadServer0 extends Thread
 						
 						if(server1 != null)
 						{
+							System.out.println("send check to server1");
 							out1.println("CHECK THIS NAME:1:"+username);
 							String responce = inp1.readLine();
 							if(responce.equals("FOUND"))
@@ -118,6 +119,7 @@ public class MultiThreadServer0 extends Thread
 						
 						if (!sameName)
 						{
+							System.out.println("not same name");
 							clientThread thread = new clientThread(client,
 									threads, username, clientNo, inp1, out1);
 							threads.add(thread);

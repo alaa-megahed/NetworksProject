@@ -40,7 +40,7 @@ public class MultiThreadServer2 extends Thread {
 		DataInputStream inp3 = null;
 		// BufferedReader br = null;
 		int port3 = 7500;
-		String host3 = "localhost";
+		String host3 = Constants.IP_SERVER_3;
 		while (true) {
 			try {
 					client = s.accept();
