@@ -45,7 +45,7 @@ public class MultiThreadServer0 extends Thread
 		while (!connectedServer)
 		{
 			try
-			{
+			{	
 				server1 = new Socket(host1, port1);
 				inp1 = new DataInputStream(server1.getInputStream());
 				out1 = new PrintStream(server1.getOutputStream());
@@ -56,7 +56,7 @@ public class MultiThreadServer0 extends Thread
 			{
 
 				// System.out.println("Cannot connect to server");
-
+				System.out.println("CAN NOT CONNECT 0 to 1");
 			}
 		}
 
@@ -79,7 +79,7 @@ public class MultiThreadServer0 extends Thread
 				String line = in.readLine();
 				if (line == null)
 				{
-					System.out.println("line enetered in null");
+					//System.out.println("line enetered in null");
 					continue;
 				}
 				if (line.startsWith("SERVER"))
@@ -107,7 +107,7 @@ public class MultiThreadServer0 extends Thread
 						
 						if(server1 != null)
 						{
-							System.out.println("send check to server1");
+							//System.out.println("send check to server1");
 							out1.println("CHECK THIS NAME:1:"+username);
 							String responce = inp1.readLine();
 							if(responce.equals("FOUND"))
@@ -119,7 +119,7 @@ public class MultiThreadServer0 extends Thread
 						
 						if (!sameName)
 						{
-							System.out.println("not same name");
+							//System.out.println("not same name");
 							clientThread thread = new clientThread(client,
 									threads, username, clientNo, inp1, out1);
 							threads.add(thread);

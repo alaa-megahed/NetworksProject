@@ -52,7 +52,7 @@ public class MultiThreadServer2 extends Thread {
 				// unique username
 				String line = in.readLine();
 				if(line == null) {
-					System.out.println("line enetered in null");
+					//System.out.println("line enetered in null");
 					continue; 
 				}
 				if (line.startsWith("SERVER")) {

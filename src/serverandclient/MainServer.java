@@ -30,7 +30,7 @@ public class MainServer
 			
 			p.println(portNumber);
 			p.println(ip);
-			System.out.println("IP and port sent");
+		//	System.out.println("IP and port sent");
 			client.close();
 			nextServer = (nextServer + 1)%4; 
 			

@@ -58,7 +58,7 @@ public class MultiThreadServer1 extends Thread {
 
 				String line = in.readLine();
 				if(line == null) {
-					System.out.println("line enetered in null");
+					//System.out.println("line enetered in null");
 					continue; 
 				}
 				if ( line.startsWith("SERVER")) {
@@ -103,6 +103,7 @@ public class MultiThreadServer1 extends Thread {
 						if(server2 != null)
 						{
 							out2.println("CHECK THIS NAME:1:"+username);
+							//System.out.println("sent check to server 2");
 							String responce = inp2.readLine();
 							if(responce.equals("FOUND"))
 							{
