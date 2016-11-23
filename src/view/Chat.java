@@ -39,7 +39,7 @@ public class Chat extends JPanel {
 		f.setFont(new Font("", 0, 15));
 		JButton send = new JButton("Send");
 		send.addActionListener(mainFrame);
-		send.setActionCommand("Send " + name);
+		send.setActionCommand("Send#" + name);
 		label.setBounds(0, 0, 120, 30);
 		f.setBounds(0, 600, 300, 100);
 		send.setBounds(310, 600, 100, 20);
@@ -70,8 +70,10 @@ public class Chat extends JPanel {
 		setVisible(true);
 
 	}
+	
 
-	public void chatmsg() {
+	public String chatmsg() {
+		String txt = f.getText(); 
 		JLabel msg = new JLabel(f.getText()); 
 //		scrollPane.setViewportView(msg);
 		chatPanel.add(msg);
@@ -81,10 +83,11 @@ public class Chat extends JPanel {
 		scrollPane.repaint();
 		//msg.setBounds(80, msgCount*100, 100, 50);
 		//msg.setVisible(true);
-		System.out.println("message sent");
+		System.out.println("message sent in method chatmsg in class chat");
 		//scrollPane.setLayout(null);
 		f.setText("");
 		msgCount++; 
+		return txt;  
 
 	}
 }

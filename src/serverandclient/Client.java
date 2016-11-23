@@ -1,40 +1,40 @@
 package serverandclient;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.StringTokenizer;
 
 public class Client implements Runnable {
 
-	static Socket myClient = null;
-	static PrintStream output = null;
-	static DataInputStream input = null;
-	static BufferedReader br = null;
+	public static Socket myClient = null;
+	public static PrintStream output = null;
+	public static DataInputStream input = null;
+	public static BufferedReader br = null;
+	public static String s = "";
+	public ActionListener listener; 
+	public String response;
 
-	public static void main(String[] args) throws UnknownHostException, IOException {
-//		int portnumber = 6000;
-//		String hostname = "localhost";
+	public boolean operate(ActionListener listener) throws UnknownHostException, IOException {
+
+		this.listener = listener; 
 		String[] arr = getCorrectServer();
 		int portnumber = Integer.parseInt(arr[0]);
-		
+
 		String hostname = arr[1];
+		System.out.println(arr[0]);
+		System.out.println("host: " + arr[1]);
 		try {
 			myClient = new Socket(hostname, portnumber);
-			
-			br = new BufferedReader(new InputStreamReader(System.in)); // take input from the user
-																		
-			input = new DataInputStream(myClient.getInputStream()); // to get the response from the server
-															
-			output = new PrintStream(myClient.getOutputStream()); // to send msg to the server
-			
-
-															
+			System.out.println("hey");
+			br = new BufferedReader(new InputStreamReader(System.in)); 
+			input = new DataInputStream(myClient.getInputStream()); 
+			output = new PrintStream(myClient.getOutputStream()); 
 		} catch (UnknownHostException e) {
 
 			e.printStackTrace();
@@ -45,29 +45,27 @@ public class Client implements Runnable {
 		}
 
 		if (myClient != null && input != null && output != null) {
-			try {
-				new Thread(new Client()).start();
-
-				while (true) {
-					output.println(br.readLine());
-				}
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
+			return true;
 		}
+		else
+			return false;
+
+	}
+
+	public void setActionListener(ActionListener listener)
+	{
+		this.listener = listener;
 	}
 
 	public void run() {
-		String s;
-		try {
-			while ((s= input.readLine()) != null) {
+		
+		try {	
+				System.out.println(s);
+			while ((s = input.readLine()) != null) {
+				System.out.println(s);
+				((Controller)listener).getMsgFromServerToClient(s);
 				
-					System.out.println(s);
-
-				if (s != null && s.equals("Bye, The connection will end!"))
-				{
+				if (s != null && s.equals("Bye, The connection will end!")) {
 					output.close();
 					input.close();
 					myClient.close();
@@ -77,26 +75,23 @@ public class Client implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
 
-		}
-	
-	public static String[] getCorrectServer() throws UnknownHostException, IOException
-	{
-		
-			Socket s = new Socket("localhost", 8000);
-			
-			input = new DataInputStream(s.getInputStream()); // to get the response from the server
-															
-			output = new PrintStream(s.getOutputStream()); // to send msg to the server
-			
-			String port = input.readLine();
-			String IP = input.readLine();
-			String[] arr = {port, IP};
-			input.close();
-			output.close();
-			s.close();
-			return arr;
-		
+	public static String[] getCorrectServer() throws UnknownHostException,
+			IOException {
+
+		Socket s = new Socket(Constants.IP_MAIN_SERVER, 8000);
+		input = new DataInputStream(s.getInputStream()); // to get the response from the server														
+		output = new PrintStream(s.getOutputStream()); // to send msg to the server
+									
+		String port = input.readLine();
+		String IP = input.readLine();
+		String[] arr = { port, IP };
+		input.close();
+		output.close();
+		s.close();
+		return arr;
+
 	}
 
 }

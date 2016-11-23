@@ -68,6 +68,7 @@ public class clientThread extends Thread
 				//loop over all online clients when client requests list of them
 				else if (line.startsWith("I want my list"))
 				{
+					output.print("LIST:");
 					boolean noone = true;
 					for (clientThread i : threads)
 					{
@@ -85,6 +86,7 @@ public class clientThread extends Thread
 				
 				else if(line.startsWith("I want all lists"))
 				{
+					output.print("LIST:");
 					int count = 1;
 					int statusSoFar = 0;
 
@@ -141,7 +143,7 @@ public class clientThread extends Thread
 								creationGrpoupHeader += ", "+namesList[j];
 						}
 						String headerMessage = "["+creationGrpoupHeader + "]";
-						String newMessage = name+":"+message;
+						String newMessage = "##message"+name+":"+message;
 						sendMessage(namesList[i], headerMessage);
 						sendMessage(namesList[i], newMessage);
 
@@ -158,7 +160,7 @@ public class clientThread extends Thread
 					{
 						message +=":" +b[i];
 					}
-					message = name+":"+message;
+					message = "##message"+":"+name+":"+message;
 					sendMessage(username, message);
 				}
 			}

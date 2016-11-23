@@ -2,15 +2,16 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class Login extends JPanel{
-	JTextField text;
+	public JTextField text;
 	JLabel enter; 
-	public Login(MainFrame mainFrame) {
+	public Login(ActionListener client) {
 		setLayout(null);
 		setSize(800, 800);
 		setBackground(Color.black);
@@ -27,7 +28,7 @@ public class Login extends JPanel{
 		
 		add(text);
 		add(enter);
-		text.addActionListener(mainFrame);
+		text.addActionListener(client);
 		text.setActionCommand("username");
 		
 		this.validate();

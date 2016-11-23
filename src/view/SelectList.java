@@ -3,38 +3,72 @@ package view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.*;
 
 public class SelectList extends JPanel {
-	ArrayList<JButton> clients;
+	ArrayList<JButton> clientButtons;
 	int count;
-	ActionListener mainFrame;
-	ArrayList<String> clientNames; 
-	public SelectList(ActionListener mainFrame, ArrayList<String> clientNames) {
+	ActionListener listener;
+	ArrayList<String> clientNames;
+
+	public SelectList(ActionListener listener, ArrayList<String> clientNames) {
+		this.listener = listener;
 		setLayout(null);
 		setSize(200, 800);
 		JButton chatGp = new JButton("Gp chat");
-		
+
 		add(chatGp);
 		chatGp.setBounds(0, 0, 100, 50);
-		this.mainFrame = mainFrame;
-		this.clientNames = clientNames; 
-		
-		setClients(clientNames);
-	
+
+		JButton myList = new JButton("My list");
+		myList.setActionCommand("my list");
+		myList.addActionListener(listener);
+
+		add(myList);
+		myList.setBounds(0, 70, 100, 50);
+
+		JButton allList = new JButton("All list");
+		allList.setActionCommand("all list");
+		allList.addActionListener(listener);
+		clientButtons = new ArrayList<JButton>();
+
+		add(allList);
+		allList.setBounds(120, 70, 100, 50);
+		this.clientNames = clientNames;
+
 		validate();
 
 	}
 
 	public void setClients(ArrayList<String> c) {
+		System.out.println("YOOOO");
+
 		int i;
+//		for (JButton button : clientButtons) {
+//			remove(button);
+//			clientButtons.remove(button);
+//		}
+		Iterator<JButton> iter = clientButtons.iterator();
+
+		while (iter.hasNext()) {
+		    JButton button = iter.next();
+		    button.setVisible(false);
+		        iter.remove();
+		   
+		}
+		revalidate();
+
 		for (i = 0; i < c.size(); i++) {
 			JButton newClient = new JButton(c.get(i));
-			newClient.setActionCommand("button " + c.get(i));
-			newClient.addActionListener(mainFrame);
+			clientButtons.add(newClient);
+			newClient.setActionCommand("button#" + c.get(i));
+			System.out.println(c.get(i));
+			newClient.addActionListener(listener);
+			newClient.setVisible(true);
 			add(newClient);
-			newClient.setBounds(0, 100 + i * 50, 120, 30);
+			newClient.setBounds(0, 200 + i * 50, 120, 30);
 		}
 	}
 
@@ -43,14 +77,14 @@ public class SelectList extends JPanel {
 	}
 
 	public static void main(String[] args) {
-//		JFrame f = new JFrame();
-//		f.setSize(800, 800);
-//		f.setTitle("SmarTongue");
-//		f.setLocationRelativeTo(null);
-//		// SelectList b = new SelectList ();
-//		f.add(b);
-//		f.validate();
-//		f.setVisible(true);
+		// JFrame f = new JFrame();
+		// f.setSize(800, 800);
+		// f.setTitle("SmarTongue");
+		// f.setLocationRelativeTo(null);
+		// // SelectList b = new SelectList ();
+		// f.add(b);
+		// f.validate();
+		// f.setVisible(true);
 	}
 
 }
