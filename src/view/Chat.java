@@ -33,6 +33,7 @@ public class Chat extends JPanel {
 		msgCount = 0; 
 		this.username = name;
 		setLayout(null);
+//		setBackground(Color.BLACK);
 		setSize(500, 800);
 		label = new JLabel(name);
 		f = new JTextField();
@@ -40,14 +41,12 @@ public class Chat extends JPanel {
 		JButton send = new JButton("Send");
 		send.addActionListener(mainFrame);
 		send.setActionCommand("Send#" + name);
-		label.setBounds(0, 0, 120, 30);
-		f.setBounds(0, 600, 300, 100);
-		send.setBounds(310, 600, 100, 20);
+		label.setBounds(50, 0, 120, 30);
+		f.setBounds(50, 570, 300, 80);
+		send.setBounds(360, 600, 100, 20);
 		add(label);
 		add(send);
 		add(f);
-		JButton chatGp = new JButton("Gp chat");
-		chatGp.setBounds(600, 0, 100, 50);
 		
 //		JPanel panel = new JPanel();
 		JPanel panel = new JPanel(new BorderLayout()); 
@@ -63,7 +62,6 @@ public class Chat extends JPanel {
 		scrollPane = new JScrollPane(chatPanel); 
 		
 		panel.add(scrollPane, BorderLayout.CENTER); 
-		add(chatGp);
 		add(panel);
 
 		this.validate();

@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class MainFrame extends JFrame {
-	static final int WIDTH = 800, HEIGHT = 800;
+	static final int WIDTH = 800, HEIGHT = 700;
 	static ArrayList<String> onlineClients = new ArrayList<String>();
 	ArrayList<Chat> chatViews;
 	public Login login;
@@ -17,6 +18,7 @@ public class MainFrame extends JFrame {
 	public MainFrame(ActionListener listener) {
 		setLayout(null);
 		setSize(WIDTH, HEIGHT);
+//		SsetBackground(Color.BLACK);
 		setTitle("SmarTongue");
 		setLocationRelativeTo(null);
 		this.listener = listener; 
@@ -29,7 +31,7 @@ public class MainFrame extends JFrame {
 
 		clients = new SelectList(listener, onlineClients);
 		add(clients);
-		clients.setBounds(600, 0, clients.getWidth(), clients.getHeight());
+		clients.setBounds(520, 0, clients.getWidth(), clients.getHeight());
 
 		// visibility
 		login.setVisible(true);
@@ -38,7 +40,7 @@ public class MainFrame extends JFrame {
 		chatViews = new ArrayList<Chat>();
 		
 		this.validate();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 
 	}
@@ -102,7 +104,7 @@ public class MainFrame extends JFrame {
 	
 	public String msgReceived(String username, String msg)
 	{
-		JLabel msgLabel = new JLabel(msg); 
+		JLabel msgLabel = new JLabel(username+": "+msg+"\n"); 
 		Chat sender = null;
 //		scrollPane.setViewportView(msg);
 		for (Chat chat : chatViews) 

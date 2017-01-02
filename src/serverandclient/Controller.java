@@ -29,10 +29,20 @@ public class Controller implements ActionListener
 			new Thread(clientReciever).start();
 			client.output.println("JOIN");
 		}
+		
+		 mainFrame.addWindowListener(new java.awt.event.WindowAdapter(){
+		      public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		        if(JOptionPane.showConfirmDialog(mainFrame , "Are you sure you want to exit ?" , "Really Closing ?" , JOptionPane.YES_NO_OPTION, 
+		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {    	
+		          client.output.println("quit");
+		        }
+		       
+		      }
+		    });
 	}
 
 	public static void main(String[] args) throws UnknownHostException,
-			IOException
+	IOException
 	{
 		new Controller();
 	}
@@ -66,41 +76,52 @@ public class Controller implements ActionListener
 
 		}
 	}
-	
+
 	//listens to responses of the server sent to the client and perform needed operations in gui
 	public void getMsgFromServerToClient(String serverMessage)
 	{
-		if (serverMessage.equals("You are now online"))
+		if(serverMessage.equals("Sorry. Enter another username"))
+		{
+			JOptionPane.showMessageDialog(null, "Please enter another username");
+		}
+		else if (serverMessage.equals("You are now online"))
 		{
 			mainFrame.login.setVisible(false);
 			mainFrame.clients.setVisible(true);
-		}
-		else if(serverMessage.equals("Sorry. Enter another username"))
-		{
-			//TODO show msg to enter another username
 		}
 		else if (serverMessage.startsWith("##message"))
 		{
 			String[] arr = serverMessage.split(":");
 			String username = arr[1];
 			String msg = arr[2];
+			for (int i = 3; i < arr.length; i++)
+			{
+				msg += ":" + arr[i];
+			}
 			mainFrame.msgReceived(username, msg);
 		} 
 		else if (serverMessage.startsWith("LIST:"))
 		{
-			StringTokenizer st = new StringTokenizer(serverMessage, ":");
-			st.nextToken();
-			String list = st.nextToken();
-			st = new StringTokenizer(list, ",");
-			ArrayList<String> arr = new ArrayList<String>();
-			while (st.hasMoreTokens())
+			if(serverMessage.contains("Nobody is online now :("))
 			{
-				String nxt = st.nextToken();
-				System.out.println(nxt);
-				arr.add(nxt);
+				JOptionPane.showMessageDialog(null, "Sorry, Nobody is online now :(");
 			}
-			mainFrame.addChats(arr);
-			mainFrame.clients.setClients(arr);
+			else
+			{
+				StringTokenizer st = new StringTokenizer(serverMessage, ":");
+				st.nextToken();
+				String list = st.nextToken();
+				st = new StringTokenizer(list, ",");
+				ArrayList<String> arr = new ArrayList<String>();
+				while (st.hasMoreTokens())
+				{
+					String nxt = st.nextToken();
+					System.out.println(nxt);
+					arr.add(nxt);
+				}
+				mainFrame.addChats(arr);
+				mainFrame.clients.setClients(arr);
+			}
 		}
 		//TODO remaining: quit, group chat, nndaf el code wel gui 
 	}

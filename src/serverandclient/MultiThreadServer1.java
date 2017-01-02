@@ -47,8 +47,8 @@ public class MultiThreadServer1 extends Thread {
 
 		while (true) {
 			try {
-				
-					client = s.accept();
+
+				client = s.accept();
 
 				DataInputStream in = new DataInputStream(client.getInputStream());
 				PrintStream p = new PrintStream(client.getOutputStream());
@@ -76,52 +76,64 @@ public class MultiThreadServer1 extends Thread {
 							System.out.println("CONNECTED SERVER 1 TO 2");
 						} catch (IOException e) {
 
-//							System.out.println("Cannot connect to server");
+							//							System.out.println("Cannot connect to server");
 
 						}
 					}
 				}
 
 				else if (line.startsWith("JOIN")) {
-//					p.println("Enter your username: ");
+					//					p.println("Enter your username: ");
 					while (true) {
 						boolean sameName = false;
-						username = in.readLine();
-
-						for (clientThread i : threads) {
-
-							if (i.name.equalsIgnoreCase(username)) {
-								p.println("Sorry. Enter another username");
-								sameName = true;
-								break;
-
-							}
-
-						}
-						if(sameName) continue;
-						
-						if(server2 != null)
+						String fromUser = in.readLine();
+						if(fromUser.equals("quit"))
 						{
-							out2.println("CHECK THIS NAME:1:"+username);
-							String responce = inp2.readLine();
-							if(responce.equals("FOUND"))
-							{
-								p.println("Sorry. Enter another username");
-								sameName = true;
-							}
-						}
-						if (!sameName) {
-							clientThread thread = new clientThread(client, threads, username, clientNo, inp2, out2);
-							threads.add(thread);
-							thread.start();
-							clientNo++;
+							p.println("Bye, The connection will end!");
 
-							break;
+							client.close();
+							p.close();
+							in.close();
 						}
-						// keep asking the client for another username if the
-						// one chosen wasn't unique
-						else {
-							continue;
+						else
+						{
+							username = fromUser;
+
+							for (clientThread i : threads) {
+
+								if (i.name.equalsIgnoreCase(username)) {
+									p.println("Sorry. Enter another username");
+									sameName = true;
+									break;
+
+								}
+
+							}
+							if(sameName) continue;
+
+							if(server2 != null)
+							{
+								out2.println("CHECK THIS NAME:1:"+username);
+								String responce = inp2.readLine();
+								if(responce.equals("FOUND"))
+								{
+									p.println("Sorry. Enter another username");
+									sameName = true;
+								}
+							}
+							if (!sameName) {
+								clientThread thread = new clientThread(client, threads, username, clientNo, inp2, out2);
+								threads.add(thread);
+								thread.start();
+								clientNo++;
+
+								break;
+							}
+							// keep asking the client for another username if the
+							// one chosen wasn't unique
+							else {
+								continue;
+							}
 						}
 					}
 				}

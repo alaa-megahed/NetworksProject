@@ -13,16 +13,16 @@ public class Login extends JPanel{
 	JLabel enter; 
 	public Login(ActionListener client) {
 		setLayout(null);
-		setSize(800, 800);
+		setSize(800, 700);
 		setBackground(Color.black);
 		
 		enter = new JLabel("Please Enter Your Username");
 		enter.setForeground(Color.RED);
 		enter.setFont(new Font("", 0, 20));
-		enter.setBounds(250,300,400,50);
+		enter.setBounds(270,230,370,50);
 		
 		text = new JTextField();
-		text.setBounds(200,400,300,40);
+		text.setBounds(240,280,300,40);
 		text.setFont(new Font("", 0, 20));
 	
 		

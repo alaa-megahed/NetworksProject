@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -16,12 +17,8 @@ public class SelectList extends JPanel {
 	public SelectList(ActionListener listener, ArrayList<String> clientNames) {
 		this.listener = listener;
 		setLayout(null);
-		setSize(200, 800);
-		JButton chatGp = new JButton("Gp chat");
-
-		add(chatGp);
-		chatGp.setBounds(0, 0, 100, 50);
-
+		setSize(250, 700);
+//		setBackground(Color.BLACK);
 		JButton myList = new JButton("My list");
 		myList.setActionCommand("my list");
 		myList.addActionListener(listener);
